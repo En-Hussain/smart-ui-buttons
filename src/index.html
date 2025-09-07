@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart UI Buttons Library - مكتبة الأزرار الذكية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 4rem;
+            font-weight: 900;
+            text-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            margin: 0;
+            font-size: 1.4rem;
+            opacity: 0.95;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .version-badge:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .language-switcher {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .section {
+            padding: 60px 40px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 40px;
+            font-size: 2.8rem;
+            font-weight: 800;
+            position: relative;
+            padding-bottom: 25px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .feature-card h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.7;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .button-demo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 35px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            border: 1px solid #e9ecef;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .button-demo:hover {
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .demo-section {
+            margin: 50px 0;
+        }
+
+        .demo-section h3 {
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .demo-section h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .code-block {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: #e2e8f0;
+            padding: 35px;
+            border-radius: 20px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin: 30px 0;
+            border: 1px solid #4a5568;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .github-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .github-link:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .rtl {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .ltr {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 30px 20px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-demo {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .language-switcher {
+                top: 20px;
+                right: 20px;
+            }
+
+            .lang-btn {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .feature-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+        .feature-card:nth-child(5) { animation-delay: 0.5s; }
+        .feature-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .stat-card {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .section {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .header-content {
+            animation: fadeInUp 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('en')">EN</button>
+        <button class="lang-btn" onclick="switchLanguage('ar')">عربي</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1 class="ltr">Smart UI Buttons Library</h1>
+                <h1 class="rtl hidden">مكتبة الأزرار الذكية</h1>
+                <p class="subtitle ltr">Beautiful, Interactive & Professional Button Components</p>
+                <p class="subtitle rtl hidden">مكونات أزرار جميلة وتفاعلية ومهنية</p>
+                <div class="version-badge">v1.0.2</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="ltr">✨ Key Features</h2>
+            <h2 class="rtl hidden">✨ الميزات الرئيسية</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3 class="ltr">🎨 11 Button Types</h3>
+                    <h3 class="rtl hidden">🎨 11 نوع زر</h3>
+                    <p class="ltr">Primary, Secondary, Success, Warning, Danger, Info, Light, Dark, Ghost, Gradient, and 3D buttons</p>
+                    <p class="rtl hidden">أزرار أساسية، ثانوية، نجاح، تحذير، خطر، معلومات، فاتحة، داكنة، شبحية، متدرجة، وثلاثية الأبعاد</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="ltr">📏 5 Sizes</h3>
+                    <h3 class="rtl hidden">📏 5 أحجام</h3>
+                    <p class="ltr">XS, SM, MD, LG, XL - Perfect for any design system</p>
+                    <p class="rtl hidden">XS, SM, MD, LG, XL - مثالية لأي نظام تصميم</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="ltr">🔘 4 Shapes</h3>
+                    <h3 class="rtl hidden">🔘 4 أشكال</h3>
+                    <p class="ltr">Square, Rounded, Pill, and Circle shapes for every use case</p>
+                    <p class="rtl hidden">أشكال مربعة، مستديرة، حبة، ودائرية لكل حالة استخدام</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="ltr">⚡ 6 Effects</h3>
+                    <h3 class="rtl hidden">⚡ 6 تأثيرات</h3>
+                    <p class="ltr">Ripple, Bounce, Shake, Pulse, Glow, and Float animations</p>
+                    <p class="rtl hidden">تأثيرات التموج، الارتداد، الاهتزاز، النبض، التوهج، والطفو</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="ltr">🌍 RTL Support</h3>
+                    <h3 class="rtl hidden">🌍 دعم RTL</h3>
+                    <p class="ltr">Full right-to-left support for Arabic and other RTL languages</p>
+                    <p class="rtl hidden">دعم كامل للاتجاه من اليمين إلى اليسار للعربية واللغات الأخرى</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="ltr">📱 Responsive</h3>
+                    <h3 class="rtl hidden">📱 متجاوب</h3>
+                    <p class="ltr">Fully responsive design that works on all devices and screen sizes</p>
+                    <p class="rtl hidden">تصميم متجاوب بالكامل يعمل على جميع الأجهزة وأحجام الشاشات</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="ltr">📊 Library Statistics</h2>
+            <h2 class="rtl hidden">📊 إحصائيات المكتبة</h2>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">11</div>
+                    <div class="stat-label ltr">Button Types</div>
+                    <div class="stat-label rtl hidden">أنواع الأزرار</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label ltr">Sizes</div>
+                    <div class="stat-label rtl hidden">الأحجام</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label ltr">Shapes</div>
+                    <div class="stat-label rtl hidden">الأشكال</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label ltr">Effects</div>
+                    <div class="stat-label rtl hidden">التأثيرات</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="ltr">🚀 Quick Start</h2>
+            <h2 class="rtl hidden">🚀 البدء السريع</h2>
+            
+            <div class="demo-section">
+                <h3 class="ltr">Installation</h3>
+                <h3 class="rtl hidden">التثبيت</h3>
+                <div class="code-block">
+                    <pre>npm install smart-ui-buttons</pre>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3 class="ltr">Basic Usage</h3>
+                <h3 class="rtl hidden">الاستخدام الأساسي</h3>
+                <div class="code-block">
+                    <pre>// HTML
+&lt;link rel="stylesheet" href="node_modules/smart-ui-buttons/dist/smart-ui-buttons.css"&gt;
+&lt;script src="node_modules/smart-ui-buttons/dist/smart-ui-buttons.js"&gt;&lt;/script&gt;
+
+// JavaScript
+const button = new SmartUIButtons.SmartButton({
+    type: 'primary',
+    text: 'Click me',
+    onClick: (event) => {
+        console.log('Button clicked!');
+    }
+});
+document.body.appendChild(button.getElement());</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="ltr">🎯 Live Demo</h2>
+            <h2 class="rtl hidden">🎯 عرض حي</h2>
+            
+            <div class="demo-section">
+                <h3 class="ltr">Button Types</h3>
+                <h3 class="rtl hidden">أنواع الأزرار</h3>
+                <div class="button-demo" id="button-types">
+                    <!-- Buttons will be created here -->
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3 class="ltr">Button Sizes</h3>
+                <h3 class="rtl hidden">أحجام الأزرار</h3>
+                <div class="button-demo" id="button-sizes">
+                    <!-- Buttons will be created here -->
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3 class="ltr">Button Shapes</h3>
+                <h3 class="rtl hidden">أشكال الأزرار</h3>
+                <div class="button-demo" id="button-shapes">
+                    <!-- Buttons will be created here -->
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3 class="ltr">Button Effects</h3>
+                <h3 class="rtl hidden">تأثيرات الأزرار</h3>
+                <div class="button-demo" id="button-effects">
+                    <!-- Buttons will be created here -->
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3 class="ltr">Gradient Buttons</h3>
+                <h3 class="rtl hidden">الأزرار المتدرجة</h3>
+                <div class="button-demo" id="gradient-buttons">
+                    <!-- Buttons will be created here -->
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3 class="ltr">Loading Buttons</h3>
+                <h3 class="rtl hidden">أزرار التحميل</h3>
+                <div class="button-demo" id="loading-buttons">
+                    <!-- Buttons will be created here -->
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3 class="ltr">Button Groups</h3>
+                <h3 class="rtl hidden">مجموعات الأزرار</h3>
+                <div class="button-demo" id="button-groups">
+                    <!-- Button groups will be created here -->
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h3 class="ltr">Dropdown Buttons</h3>
+                <h3 class="rtl hidden">الأزرار المنسدلة</h3>
+                <div class="button-demo" id="dropdown-buttons">
+                    <!-- Dropdown buttons will be created here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="ltr">📚 Documentation</h2>
+            <h2 class="rtl hidden">📚 الوثائق</h2>
+            
+            <div class="github-links">
+                <a href="#" class="github-link">📖 Full Documentation</a>
+                <a href="#" class="github-link">🐛 Report Bug</a>
+                <a href="#" class="github-link">💡 Request Feature</a>
+                <a href="#" class="github-link">⭐ Star on GitHub</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="ltr">Made with ❤️ by <strong>En-Hussain</strong> | Smart UI Buttons Library v1.0.2</p>
+            <p class="rtl hidden">صُنع بـ ❤️ بواسطة <strong>En-Hussain</strong> | مكتبة الأزرار الذكية الإصدار 1.0.2</p>
+        </div>
+    </div>
+    
+    <script src="smart-ui-buttons.js"></script>
+    <script>
+        function switchLanguage(lang) {
+            const ltrElements = document.querySelectorAll('.ltr');
+            const rtlElements = document.querySelectorAll('.rtl');
+            const langButtons = document.querySelectorAll('.lang-btn');
+            
+            langButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (lang === 'en') {
+                ltrElements.forEach(el => el.classList.remove('hidden'));
+                rtlElements.forEach(el => el.classList.add('hidden'));
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', 'en');
+            } else {
+                ltrElements.forEach(el => el.classList.add('hidden'));
+                rtlElements.forEach(el => el.classList.remove('hidden'));
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.documentElement.setAttribute('lang', 'ar');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttonTypesContainer = document.getElementById('button-types');
+            const buttonTypes = [
+                { type: 'primary', text: 'Primary' },
+                { type: 'secondary', text: 'Secondary' },
+                { type: 'success', text: 'Success' },
+                { type: 'warning', text: 'Warning' },
+                { type: 'danger', text: 'Danger' },
+                { type: 'info', text: 'Info' },
+                { type: 'light', text: 'Light' },
+                { type: 'dark', text: 'Dark' },
+                { type: 'ghost', text: 'Ghost' },
+                { type: 'gradient', text: 'Gradient' },
+                { type: '3d', text: '3D' }
+            ];
+
+            buttonTypes.forEach(btnType => {
+                const button = new SmartUIButtons.SmartButton({
+                    type: btnType.type,
+                    text: btnType.text,
+                    onClick: () => alert(`${btnType.text} button clicked!`)
+                });
+                buttonTypesContainer.appendChild(button.getElement());
+            });
+
+            const buttonSizesContainer = document.getElementById('button-sizes');
+            const buttonSizes = [
+                { size: 'xs', text: 'XS' },
+                { size: 'sm', text: 'SM' },
+                { size: 'md', text: 'MD' },
+                { size: 'lg', text: 'LG' },
+                { size: 'xl', text: 'XL' }
+            ];
+
+            buttonSizes.forEach(btnSize => {
+                const button = new SmartUIButtons.SmartButton({
+                    type: 'primary',
+                    size: btnSize.size,
+                    text: btnSize.text,
+                    onClick: () => alert(`${btnSize.text} size button clicked!`)
+                });
+                buttonSizesContainer.appendChild(button.getElement());
+            });
+
+            const buttonShapesContainer = document.getElementById('button-shapes');
+            const buttonShapes = [
+                { shape: 'square', text: 'Square' },
+                { shape: 'rounded', text: 'Rounded' },
+                { shape: 'pill', text: 'Pill' },
+                { shape: 'circle', text: 'Circle' }
+            ];
+
+            buttonShapes.forEach(btnShape => {
+                const button = new SmartUIButtons.SmartButton({
+                    type: 'primary',
+                    shape: btnShape.shape,
+                    text: btnShape.text,
+                    onClick: () => alert(`${btnShape.text} shape button clicked!`)
+                });
+                buttonShapesContainer.appendChild(button.getElement());
+            });
+
+            const buttonEffectsContainer = document.getElementById('button-effects');
+            const buttonEffects = [
+                { effect: 'ripple', text: 'Ripple' },
+                { effect: 'bounce', text: 'Bounce' },
+                { effect: 'shake', text: 'Shake' },
+                { effect: 'pulse', text: 'Pulse' },
+                { effect: 'glow', text: 'Glow' },
+                { effect: 'float', text: 'Float' }
+            ];
+
+            buttonEffects.forEach(btnEffect => {
+                const button = new SmartUIButtons.SmartButton({
+                    type: 'primary',
+                    effect: btnEffect.effect,
+                    text: btnEffect.text,
+                    onClick: () => alert(`${btnEffect.text} effect button clicked!`)
+                });
+                buttonEffectsContainer.appendChild(button.getElement());
+            });
+
+            const gradientButtonsContainer = document.getElementById('gradient-buttons');
+            const gradientButtons = [
+                { colors: ['#ff6b6b', '#4ecdc4'], text: 'Sunset' },
+                { colors: ['#667eea', '#764ba2'], text: 'Purple' },
+                { colors: ['#f093fb', '#f5576c'], text: 'Pink' },
+                { colors: ['#4facfe', '#00f2fe'], text: 'Blue' },
+                { colors: ['#43e97b', '#38f9d7'], text: 'Green' }
+            ];
+
+            gradientButtons.forEach(gradient => {
+                const button = new SmartUIButtons.SmartButton({
+                    type: 'gradient',
+                    gradient: {
+                        colors: gradient.colors,
+                        direction: 'to-right'
+                    },
+                    text: gradient.text,
+                    onClick: () => alert(`${gradient.text} gradient button clicked!`)
+                });
+                gradientButtonsContainer.appendChild(button.getElement());
+            });
+
+            const loadingButtonsContainer = document.getElementById('loading-buttons');
+            const loadingButton = new SmartUIButtons.SmartButton({
+                type: 'primary',
+                text: 'Loading Button',
+                loading: true,
+                onClick: () => alert('Loading button clicked!')
+            });
+            loadingButtonsContainer.appendChild(loadingButton.getElement());
+
+            const buttonGroupsContainer = document.getElementById('button-groups');
+            const buttonGroup = new SmartUIButtons.ButtonGroup({
+                buttons: [
+                    { type: 'primary', text: 'Save' },
+                    { type: 'secondary', text: 'Edit' },
+                    { type: 'danger', text: 'Delete' }
+                ],
+                direction: 'horizontal'
+            });
+            buttonGroupsContainer.appendChild(buttonGroup.getElement());
+
+            const dropdownButtonsContainer = document.getElementById('dropdown-buttons');
+            const dropdownButton = new SmartUIButtons.DropdownButton({
+                type: 'primary',
+                text: 'Dropdown Menu',
+                items: [
+                    { text: 'Option 1', onClick: () => alert('Option 1 selected!') },
+                    { text: 'Option 2', onClick: () => alert('Option 2 selected!') },
+                    { text: 'Option 3', onClick: () => alert('Option 3 selected!') }
+                ]
+            });
+            dropdownButtonsContainer.appendChild(dropdownButton.getElement());
+        });
+    </script>
+</body>
+</html>

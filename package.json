@@ -1,0 +1,53 @@
+{
+  "name": "smart-ui-buttons",
+  "version": "1.0.3",
+  "description": "Smart UI Buttons Library with Beautiful Interactive Effects",
+  "main": "dist/smart-ui-buttons.js",
+  "types": "dist/smart-ui-buttons.d.ts",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:webpack": "webpack --mode=production",
+    "build:ts": "npx tsc",
+    "dev": "webpack --mode=development --watch",
+    "serve": "http-server dist -p 8080 -o",
+    "start": "npm run build && npm run serve",
+    "clean": "rimraf dist",
+    "lint": "echo \"No linter configured\" && exit 0",
+    "test": "echo \"No tests specified\" && exit 0",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "buttons",
+    "ui",
+    "components",
+    "interactive",
+    "effects",
+    "css",
+    "javascript",
+    "web",
+    "library"
+  ],
+  "author": "En-Hussain",
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "html-webpack-plugin": "^5.5.3",
+    "http-server": "^14.1.1",
+    "rimraf": "^6.0.1",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/En-Hussain/smart-buttons.git"
+  },
+  "homepage": "https://github.com/En-Hussain/smart-buttons#readme"
+}
